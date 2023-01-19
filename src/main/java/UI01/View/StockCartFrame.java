@@ -47,9 +47,9 @@ public class StockCartFrame extends JInternalFrame {
 	 * Create the frame.
 	 */
 	public StockCartFrame() {
+		setResizable(true);
 		setTitle("Stok Kartı");
 		setClosable(true);
-		setBorder(null);
 		setBounds(100, 100, 570, 300);
 		getContentPane().setLayout(null);
 		

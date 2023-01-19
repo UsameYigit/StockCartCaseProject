@@ -3,6 +3,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -13,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "stock_carts")
 public class StockCart {
 	@Id
-	@Column(name="stock_code", length=50, nullable=false)
+	@Column(name="stock_code", length=50, nullable=false, unique = true)
 	private String stockCode;
 	
 	@Column(name="stock_name", length=100, nullable=false)
@@ -30,13 +32,11 @@ public class StockCart {
 	
 	@Column(name="creation_date", nullable=false)
 	private LocalDateTime creationDate;
-	
+
 	@ManyToOne
-	@Column(name = "tax_type_fk")
 	private TaxType taxType;
 	
 	@ManyToOne
-	@Column(name = "stock_type_fk")
 	private StockType stockType;
 	
 	public StockCart() {

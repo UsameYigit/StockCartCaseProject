@@ -5,6 +5,10 @@ import UI01.Commands.GeneralAction;
 import UI01.Commands.Concrete.StockCartCrudCommands.AddStockCartCommand;
 import UI01.Commands.Concrete.StockCartCrudCommands.CopyStockCartCommand;
 import UI01.Commands.Concrete.StockCartCrudCommands.DeleteStockCartCommand;
+import UI01.Commands.Concrete.StockCartCrudCommands.FirstStockCartCommand;
+import UI01.Commands.Concrete.StockCartCrudCommands.LastStockCartCommand;
+import UI01.Commands.Concrete.StockCartCrudCommands.NextStockCartCommand;
+import UI01.Commands.Concrete.StockCartCrudCommands.PreviousStockCartCommand;
 import UI01.View.StockCartFrame;
 
 
@@ -22,7 +26,6 @@ public class StockCartFrameController {
 	
 	public void launch(){
 		try {
-			generalStockCartOperations.refreshLists();
 			setButtonListeners();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -33,5 +36,9 @@ public class StockCartFrameController {
 		stockCartFrame.getBtnSave().addActionListener(new GeneralAction(new AddStockCartCommand(generalStockCartOperations)));
 		stockCartFrame.getBtnDelete().addActionListener(new GeneralAction(new DeleteStockCartCommand(generalStockCartOperations)));
 		stockCartFrame.getBtnCopy().addActionListener(new GeneralAction(new CopyStockCartCommand(generalStockCartOperations)));
+		stockCartFrame.getBtnFirst().addActionListener(new GeneralAction(new FirstStockCartCommand(generalStockCartOperations)));
+		stockCartFrame.getBtnLast().addActionListener(new GeneralAction(new LastStockCartCommand(generalStockCartOperations)));
+		stockCartFrame.getBtnNext().addActionListener(new GeneralAction(new NextStockCartCommand(generalStockCartOperations)));
+		stockCartFrame.getBtnPrevious().addActionListener(new GeneralAction(new PreviousStockCartCommand(generalStockCartOperations)));
 	}	
 }

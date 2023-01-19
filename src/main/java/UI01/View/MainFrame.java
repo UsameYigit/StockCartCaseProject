@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuItem;
 import javax.swing.JInternalFrame;
+import java.awt.Window.Type;
 
 public class MainFrame extends JFrame {
 

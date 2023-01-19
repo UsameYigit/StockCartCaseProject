@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class StockType {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name = "Id", nullable = false, columnDefinition = "INT(11) UNSIGNED")
+	@Column(name = "id", nullable = false, columnDefinition = "INT(11) UNSIGNED")
 	private int id;
 	
 	@Column(name="code", length=15, nullable=false)
@@ -30,7 +30,7 @@ public class StockType {
 	@Column(name="rating")
 	private double rating;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "stocktype")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "stockType")
     private Set<StockCart> stockCarts = new HashSet<>();
 
 	public StockType() {
@@ -77,5 +77,10 @@ public class StockType {
 
 	public void setStockCarts(Set<StockCart> stockCarts) {
 		this.stockCarts = stockCarts;
+	}
+	
+	@Override
+	public String toString() {
+		return this.id+"";
 	}
 }

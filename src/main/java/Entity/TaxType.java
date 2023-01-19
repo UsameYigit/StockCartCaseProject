@@ -30,7 +30,7 @@ public class TaxType {
 	@Column(name="description", columnDefinition = "TEXT")
 	private String description;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "taxtype")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "taxType")
     private Set<StockCart> stockCarts = new HashSet<>();
 	
 	public TaxType() {
@@ -77,5 +77,10 @@ public class TaxType {
 
 	public void setStockCarts(Set<StockCart> stockCarts) {
 		this.stockCarts = stockCarts;
+	}
+	
+	@Override
+	public String toString() {
+		return this.id+"";
 	}
 }

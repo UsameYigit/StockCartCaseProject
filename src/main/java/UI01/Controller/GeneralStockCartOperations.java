@@ -2,8 +2,10 @@ package UI01.Controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 import Business.Abstract.IStockCartService;
@@ -40,7 +42,7 @@ public class GeneralStockCartOperations {
 			
 			StockCart sc = new StockCart(
 					stockCartFrame.getTxtStockCode().getText(),
-					stockCartFrame.getTxtStockName().getText(), 
+					stockCartFrame.getTxtStockName().getText(),
 					st,
 					stockCartFrame.getCmbUnit().getSelectedItem().toString(),
 					stockCartFrame.getTxtBarcode().getText(),
@@ -50,16 +52,16 @@ public class GeneralStockCartOperations {
 			
 			if(doesExist(sc)) {
 				stockCartService.update(sc);
-				resetFields();
+				resetViewFields();
 			}else {
 				stockCartService.create(sc);
-				resetFields();
+				resetViewFields();
 			}
 		}
 			
 	}
 	
-	public boolean doesExist(StockCart sc) {
+	private boolean doesExist(StockCart sc) {
 		ArrayList<StockCart> al = stockCartService.getAll();
 		for(int i = 0; i<al.size(); i++)
 			if(al.get(i).getStockCode().equals(sc.getStockCode()))
@@ -72,7 +74,7 @@ public class GeneralStockCartOperations {
 			StockCart sc = stockCartService.getByStockCode(stockCartFrame.getTxtStockCode().getText());
 			if(sc != null) {
 				stockCartService.delete(sc);
-				resetFields();
+				resetViewFields();
 			}else
 				JOptionPane.showMessageDialog(null, "Böyle bir stok kartı zaten bulunmamaktadır.");
 		}
@@ -80,91 +82,81 @@ public class GeneralStockCartOperations {
 	
 	public void copySelectedItem() {
 		if(stockCartFrame.getTxtStockCode() != null) {
-			UUID uuid = UUID.randomUUID();
-			StockCart sc = stockCartService.getByStockCode(stockCartFrame.getTxtStockCode().getText());
-			if(sc != null) {
-				sc.setStockCode(uuid.toString().substring(0, 8));
-				stockCartService.create(sc);
-				resetFields();
-			}else
-				JOptionPane.showMessageDialog(null, "Böyle bir stok kartı bulunmamaktadır, kopyalanamaz.");
+			String stockCode = JOptionPane.showInputDialog(
+                    "What is your name?", null);
+			if(stockCode==null)
+				JOptionPane.showMessageDialog(null, "Alanı doldurmadığınız için kopyalama işlemi tamamlanamadı.");
+			else {
+				StockCart sc = stockCartService.getByStockCode(stockCartFrame.getTxtStockCode().getText());
+				if(sc != null) {
+					if(doesExist(sc)) {
+						sc.setStockCode(stockCode);
+						stockCartService.create(sc);
+						resetViewFields();
+					}else 
+						JOptionPane.showMessageDialog(null, "Böyle bir stok kartı bulunmamaktadır, kopyalanamaz.");
+				}else
+					JOptionPane.showMessageDialog(null, "Böyle bir stok kartı bulunmamaktadır, kopyalanamaz.");
+			}
+			
 		}else
 			JOptionPane.showMessageDialog(null, "Böyle bir stok kartı bulunmamaktadır, kopyalanamaz.");
 	}
 	
-	public void searchStockCart() {
-//		if(frame.getSearchPage().getTxtSearch().getText().isEmpty()) 
-//			JOptionPane.showMessageDialog(null, "Lütfen arama alanını doldurunuz.");
-//		else {
-//			DefaultListModel stockCarts = new DefaultListModel();
-//			String data = frame.getSearchPage().getTxtSearch().getText();
-//			StockCart sc = stockCartService.getByStockCode(data);
-//			if(sc != null)
-//				stockCarts.addElement(sc.getStockCode());
-//			else {
-//				ArrayList<StockCart> al = stockCartService.getByBarcode(data);
-//				if(!al.isEmpty())
-//					for(int i = 0; i<al.size(); i++)
-//						stockCarts.addElement(al.get(i).getStockCode());
-//				else {
-//					al = stockCartService.getByStockName(data);
-//					if(!al.isEmpty())
-//						for(int i = 0; i<al.size(); i++)
-//							stockCarts.addElement(al.get(i).getStockCode());
-//				}
-//			}
-//			
-//			frame.getSearchPage().getListStockCarts().setModel(stockCarts);	
-//		}
+	
+	//Navigators
+	public void getPreviousItem() {
+		StockCart sc;
+		if(stockCartFrame.getTxtStockCode().getText().equals(""))
+			sc = stockCartService.getFirstItem();
+		else {
+			sc = stockCartService.getByStockCode(stockCartFrame.getTxtStockCode().getText());
+			if(sc != null)
+				sc = stockCartService.getPreviousItem(sc.getStockCode());
+			else
+				sc = stockCartService.getFirstItem();
+		}
 		
+		setViewFields(sc);
 	}
 	
-	public void setSearchFields(){
-//		if(frame.getSearchPage().getListStockCarts().getSelectedValue() != null) {
-//			StockCart sc = stockCartService.getByStockCode(frame.getSearchPage().getListStockCarts().getSelectedValue().toString());
-//			frame.getSearchPage().getTxtStockCode().setText(sc.getStockCode());
-//			frame.getSearchPage().getTxtStockName().setText(sc.getStockName());
-//			frame.getSearchPage().getTxtStockType().setText(sc.getStockType()+"");
-//			frame.getSearchPage().getTxtUnit().setText(sc.getUnit());
-//			frame.getSearchPage().getTxtBarcode().setText(sc.getBarcode());
-//			frame.getSearchPage().getTxtTaxType().setText(sc.getTaxType()+"");
-//			frame.getSearchPage().getFtxtDateCreated().setText(sc.getCreationDate().toString());
-//			frame.getSearchPage().getTxtAreaDescription().setText(sc.getDescription());
-//		}
+	public void getNextItem() {
+		StockCart sc;
+		if(stockCartFrame.getTxtStockCode().getText().equals(""))
+			sc = stockCartService.getFirstItem();
+		else {
+			sc = stockCartService.getByStockCode(stockCartFrame.getTxtStockCode().getText());
+			if(sc != null)
+				sc = stockCartService.getNextItem(sc.getStockCode());
+			else
+				sc = stockCartService.getFirstItem();
+		}
+		
+		setViewFields(sc);
 	}
 	
-	public void setDeleteFields() {
-//		if(frame.getDeletePage().getListStockCode().getSelectedValue() != null) {
-//			StockCart sc = stockCartService.getByStockCode(frame.getDeletePage().getListStockCode().getSelectedValue().toString());
-//			frame.getDeletePage().getTxtBarcode().setText(sc.getBarcode());
-//			frame.getDeletePage().getTxtAreaDescription().setText(sc.getDescription());
-//			frame.getDeletePage().getTxtCreationDate().setText(sc.getCreationDate().toString());
-//		}
+	public void getFirstItem() {		
+		setViewFields(stockCartService.getFirstItem());
 	}
 	
-	public void refreshLists() {
-//		frame.getSearchPage().getListStockCarts().setModel(getStockCarts());
-//		frame.getDeletePage().getListStockCode().setModel(getStockCarts());
-//		initializeStockCode();
+	public void getLastItem() {		
+		setViewFields(stockCartService.getLastItem());
 	}
 	
-//	private DefaultListModel getStockCarts() {
-//		DefaultListModel stockCarts = new DefaultListModel();
-//		ArrayList<StockCart> al = stockCartService.getAll();
-//		for(int i = 0; i<al.size(); i++)
-//			stockCarts.addElement(al.get(i).getStockCode());
-//		return stockCarts;
-//	}
 	
-//	private void initializeStockCode() {
-//		frame.getUpdatePage().getCmbStockCode().removeAllItems();
-//		ArrayList<StockCart> al = stockCartService.getAll();
-//		if(al != null)
-//			for(int i = 0; i<al.size(); i++)
-//				frame.getUpdatePage().getCmbStockCode().addItem(al.get(i).getStockCode());
-//	}
+	private void setViewFields(StockCart sc) {
+		stockCartFrame.getTxtStockCode().setText(sc.getStockCode());
+		stockCartFrame.getTxtStockName().setText(sc.getStockName());
+		stockCartFrame.getTxtBarcode().setText(sc.getBarcode());
+		stockCartFrame.getTxtCreationDate().setText(sc.getCreationDate().toString());
+		stockCartFrame.getTxtaDescription().setText(sc.getDescription());
+		stockCartFrame.getCmbStockType().setSelectedItem(sc.getStockType().getId()+"");
+		stockCartFrame.getCmbTaxType().setSelectedItem(sc.getTaxType().getId()+"");
+		stockCartFrame.getCmbUnit().setSelectedItem(sc.getUnit());
+	}
 	
-	private void resetFields() {
+	
+	public void resetViewFields() {
 		stockCartFrame.getTxtStockCode().setText("");
 		stockCartFrame.getTxtStockName().setText("");
 		stockCartFrame.getCmbStockType().setSelectedIndex(0);
@@ -173,6 +165,23 @@ public class GeneralStockCartOperations {
 		stockCartFrame.getCmbTaxType().setSelectedIndex(0);
 		stockCartFrame.getTxtaDescription().setText("");
 		stockCartFrame.getTxtCreationDate().setText("");
+	}
+	
+	public void setComboBoxes() {
+
+		List<StockType> stockTypes = stockTypeService.getAll();
+		String[] stockTypesIds = new String[stockTypes.size()];
+		for(int i = 0; i < stockTypes.size(); i++)
+			stockTypesIds[i] = stockTypes.get(i).getId()+"";
+		
+		stockCartFrame.getCmbStockType().setModel(new DefaultComboBoxModel<String>(stockTypesIds));
+		
+		List<TaxType> taxTypes = taxTypeService.getAll();
+		String[] taxTypesIds = new String[taxTypes.size()];
+		for(int i = 0; i < taxTypes.size(); i++)
+			taxTypesIds[i] = taxTypes.get(i).getId()+"";
+		
+		stockCartFrame.getCmbTaxType().setModel(new DefaultComboBoxModel<String>(taxTypesIds));
 	}
 
 }

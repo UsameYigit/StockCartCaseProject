@@ -12,4 +12,8 @@ public interface IStockCartService {
 	public StockCart getByStockCode(String stockCode);
 	public ArrayList<StockCart> getByStockName(String stockName);
 	public ArrayList<StockCart> getByBarcode(String barcode);
+	public StockCart getNextItem(String stockCode);
+	public StockCart getPreviousItem(String stockCode);
+	public StockCart getLastItem();
+	public StockCart getFirstItem();
 }

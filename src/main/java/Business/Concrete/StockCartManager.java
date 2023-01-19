@@ -42,4 +42,24 @@ public class StockCartManager implements IStockCartService{
 		return stockCartRepository.getByBarcode(barcode);
 	}
 
+	@Override
+	public StockCart getNextItem(String stockCode) {
+		return stockCartRepository.getNextItem(stockCode);
+	}
+
+	@Override
+	public StockCart getPreviousItem(String stockCode) {
+		return stockCartRepository.getPreviousItem(stockCode);
+	}
+
+	@Override
+	public StockCart getLastItem() {
+		return stockCartRepository.getLastItem();
+	}
+
+	@Override
+	public StockCart getFirstItem() {
+		return stockCartRepository.getFirstItem();
+	}
+
 }

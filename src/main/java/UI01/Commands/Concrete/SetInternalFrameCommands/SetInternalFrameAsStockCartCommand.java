@@ -12,6 +12,8 @@ public class SetInternalFrameAsStockCartCommand extends SetCurrentInternalFrameC
 	
 	@Override
 	public void execute() {
+		generalMainPageOperations.getGeneralStockCartOperations().setComboBoxes();
+		generalMainPageOperations.getGeneralStockCartOperations().resetViewFields();
 		generalMainPageOperations.setCurrentInternalFrame(stockCartFrame);
 	}
 

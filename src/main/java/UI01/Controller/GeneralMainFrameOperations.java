@@ -6,10 +6,12 @@ import UI01.View.MainFrame;
 
 public class GeneralMainFrameOperations {
 	private MainFrame frame;
+	private GeneralStockCartOperations generalStockCartOperations;
 	private GeneralStockCartListOperations generalStockCartListOperations;
-	public GeneralMainFrameOperations(MainFrame frame, GeneralStockCartListOperations generalStockCartListOperations) {
+	public GeneralMainFrameOperations(MainFrame frame, GeneralStockCartListOperations generalStockCartListOperations, GeneralStockCartOperations generalStockCartOperations) {
 		this.frame = frame;
 		this.generalStockCartListOperations = generalStockCartListOperations;
+		this.generalStockCartOperations = generalStockCartOperations;
 	}
 	
 	public void setCurrentInternalFrame(JInternalFrame internalFrame){		
@@ -23,5 +25,9 @@ public class GeneralMainFrameOperations {
 	
 	public GeneralStockCartListOperations getGeneralStockCartListOperations() {
 		return this.generalStockCartListOperations;
+	}
+	
+	public GeneralStockCartOperations getGeneralStockCartOperations() {
+		return this.generalStockCartOperations;
 	}
 }

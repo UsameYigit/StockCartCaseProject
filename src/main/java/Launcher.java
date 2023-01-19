@@ -36,7 +36,7 @@ public class Launcher {
 		
 		sclfc.launch();
 		
-		MainFrameController mainFrameController = new MainFrameController(frame, stockCartFrame, stockCartListFrame, gsclo);
+		MainFrameController mainFrameController = new MainFrameController(frame, stockCartFrame, stockCartListFrame, gsclo, gsco);
 		mainFrameController.launch();
 		
 	}

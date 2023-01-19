@@ -157,4 +157,104 @@ public class StockCartOperations implements IStockCartRepository {
 		return result;
 	}
 
+	@Override
+	public StockCart getNextItem(String stockCode) {
+		Session session = SessionFactorySingleton.getSessionFactory().openSession();
+		ArrayList<StockCart> result = null;
+		try {
+			session.beginTransaction();
+			result = new ArrayList<StockCart>(session.createQuery("FROM StockCart WHERE stockCode = (SELECT MIN(stockCode) FROM StockCart WHERE stockCode > '"+stockCode+"')").list());
+			session.getTransaction().commit();
+		}
+		catch(IllegalArgumentException iae) {
+			System.out.println("Illegal Argument Excepition occured.");
+		}
+		catch(Exception e){
+			System.out.println("Exception occured.");
+		}
+		finally {
+			session.close();
+		}
+		
+		if(!result.isEmpty())
+			return result.get(0);
+		else
+			return getLastItem();
+	}
+
+	@Override
+	public StockCart getPreviousItem(String stockCode) {
+		Session session = SessionFactorySingleton.getSessionFactory().openSession();
+		ArrayList<StockCart> result = null;
+		try {
+			session.beginTransaction();
+			result = new ArrayList<StockCart>(session.createQuery("FROM StockCart WHERE stockCode = (SELECT MAX(stockCode) FROM StockCart WHERE stockCode < '"+stockCode+"')").list());
+			session.getTransaction().commit();
+		}
+		catch(IllegalArgumentException iae) {
+			System.out.println("Illegal Argument Excepition occured.");
+		}
+		catch(Exception e){
+			System.out.println("Exception occured.");
+		}
+		finally {
+			session.close();
+		}
+		
+		if(!result.isEmpty())
+			return result.get(0);
+		else
+			return getFirstItem();
+	}
+
+	@Override
+	public StockCart getLastItem() {
+		Session session = SessionFactorySingleton.getSessionFactory().openSession();
+		ArrayList<StockCart> result = null;
+		try {
+			session.beginTransaction();
+			result = new ArrayList<StockCart>(session.createQuery("FROM StockCart WHERE stockCode = (SELECT MAX(stockCode) FROM StockCart)").list());
+			session.getTransaction().commit();
+		}
+		catch(IllegalArgumentException iae) {
+			System.out.println("Illegal Argument Excepition occured.");
+		}
+		catch(Exception e){
+			System.out.println("Exception occured.");
+		}
+		finally {
+			session.close();
+		}
+		
+		if(!result.isEmpty())
+			return result.get(0);
+		else
+			return null;
+	}
+
+	@Override
+	public StockCart getFirstItem() {
+		Session session = SessionFactorySingleton.getSessionFactory().openSession();
+		ArrayList<StockCart> result = null;
+		try {
+			session.beginTransaction();
+			result = new ArrayList<StockCart>(session.createQuery("FROM StockCart WHERE stockCode = (SELECT MIN(stockCode) FROM StockCart)").list());
+			session.getTransaction().commit();
+		}
+		catch(IllegalArgumentException iae) {
+			System.out.println("Illegal Argument Excepition occured.");
+		}
+		catch(Exception e){
+			System.out.println("Exception occured.");
+		}
+		finally {
+			session.close();
+		}
+		
+		if(!result.isEmpty())
+			return result.get(0);
+		else
+			return null;
+	}
+
 }

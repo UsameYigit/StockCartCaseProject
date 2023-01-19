@@ -15,11 +15,11 @@ public class MainFrameController {
 	
 	
 	
-	public MainFrameController(MainFrame frame, StockCartFrame stockCartFrame, StockCartListFrame stockCartListFrame, GeneralStockCartListOperations generalStockCartListOperations) {
+	public MainFrameController(MainFrame frame, StockCartFrame stockCartFrame, StockCartListFrame stockCartListFrame, GeneralStockCartListOperations generalStockCartListOperations, GeneralStockCartOperations generalStockCartOperations) {
 		this.frame = frame;
 		this.stockCartFrame = stockCartFrame;
 		this.stockCartListFrame = stockCartListFrame;
-		this.generalMainPageOperations = new GeneralMainFrameOperations(frame, generalStockCartListOperations);
+		this.generalMainPageOperations = new GeneralMainFrameOperations(frame, generalStockCartListOperations, generalStockCartOperations);
 	}
 	
 	public void launch(){
