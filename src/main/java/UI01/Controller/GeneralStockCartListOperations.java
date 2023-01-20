@@ -14,11 +14,14 @@ import javax.swing.table.TableModel;
 
 import Business.Abstract.IStockCartService;
 import Entity.StockCart;
+import UI01.View.StockCartFrame;
 import UI01.View.StockCartListFrame;
 
 public class GeneralStockCartListOperations {
 	private StockCartListFrame stockCartListFrame;
 	private IStockCartService stockCartService;
+	
+	private StockCart stockCartToSend;
 	
 	public GeneralStockCartListOperations(StockCartListFrame stockCartListFrame, IStockCartService stockCartService) {
 		this.stockCartListFrame = stockCartListFrame;
@@ -68,13 +71,25 @@ public class GeneralStockCartListOperations {
 		stockCartListFrame.getTblStockCartList().setModel(dtm);
 	}
 	
+	
 	public void openPopUpMenu(MouseEvent e) {
 		int row = stockCartListFrame.getTblStockCartList().rowAtPoint( e.getPoint() );
 		stockCartListFrame.getTblStockCartList().changeSelection( row, 0, false, false );
 		
-		StockCart sc = setSelectedStockCart();
+		stockCartToSend = setSelectedStockCart();
 		
 		stockCartListFrame.getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
+	}
+	
+	public void setStockCartFrameToSelected(StockCartFrame stockCartFrame) {
+		stockCartFrame.getTxtStockCode().setText(stockCartToSend.getStockCode());
+		stockCartFrame.getTxtStockName().setText(stockCartToSend.getStockName());
+		stockCartFrame.getTxtBarcode().setText(stockCartToSend.getBarcode());
+		stockCartFrame.getTxtCreationDate().setText(stockCartToSend.getCreationDate().toString());
+		stockCartFrame.getTxtaDescription().setText(stockCartToSend.getDescription());
+		stockCartFrame.getCmbStockType().setSelectedItem(stockCartToSend.getStockType().getId()+"");
+		stockCartFrame.getCmbTaxType().setSelectedItem(stockCartToSend.getTaxType().getId()+"");
+		stockCartFrame.getCmbUnit().setSelectedItem(stockCartToSend.getUnit());
 	}
 	
 	public void exportStockCartListToExcel(){

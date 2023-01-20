@@ -83,7 +83,7 @@ public class GeneralStockCartOperations {
 	public void copySelectedItem() {
 		if(stockCartFrame.getTxtStockCode() != null) {
 			String stockCode = JOptionPane.showInputDialog(
-                    "What is your name?", null);
+                    "Lütfen yeni Stok Kodu giriniz.", null);
 			if(stockCode==null)
 				JOptionPane.showMessageDialog(null, "Alanı doldurmadığınız için kopyalama işlemi tamamlanamadı.");
 			else {

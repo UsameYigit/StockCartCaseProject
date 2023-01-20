@@ -18,7 +18,7 @@ public class GeneralMainFrameOperations {
 		if(!(frame.getInternalFrame() == null))
 			frame.getInternalFrame().dispose();
 		frame.setInternalFrame(internalFrame);
-		frame.getInternalFrame().setBounds(0, 0, 600, 350);
+		frame.getInternalFrame().setBounds(0, 0, 900, 500);
 		frame.getContentPane().add(frame.getInternalFrame());
 		frame.getInternalFrame().setVisible(true);
 	}

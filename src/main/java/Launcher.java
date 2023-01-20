@@ -5,6 +5,7 @@ import Business.Concrete.TaxTypeManager;
 import Data.Concrete.StockCartOperations;
 import Data.Concrete.StockTypeOperations;
 import Data.Concrete.TaxTypeOperations;
+import UI01.Controller.GeneralMainFrameOperations;
 import UI01.Controller.GeneralStockCartListOperations;
 import UI01.Controller.GeneralStockCartOperations;
 import UI01.Controller.MainFrameController;
@@ -26,17 +27,23 @@ public class Launcher {
 		StockTypeManager stm = new StockTypeManager(new StockTypeOperations());
 		TaxTypeManager ttm = new TaxTypeManager(new TaxTypeOperations());
 		
+		//General Operations
 		GeneralStockCartOperations gsco = new GeneralStockCartOperations(stockCartFrame, scm, stm, ttm);
+		GeneralStockCartListOperations gsclo = new GeneralStockCartListOperations(stockCartListFrame, scm);
+		GeneralMainFrameOperations gmpo = new GeneralMainFrameOperations(frame, gsclo, gsco);
+		
 		StockCartFrameController scfc = new StockCartFrameController(stockCartFrame, scm, gsco);
 		
 		scfc.launch();
 		
-		GeneralStockCartListOperations gsclo = new GeneralStockCartListOperations(stockCartListFrame, scm);
-		StockCartListFrameController sclfc = new StockCartListFrameController(stockCartListFrame, scm, gsclo);
+
+		StockCartListFrameController sclfc = new StockCartListFrameController(stockCartListFrame, scm, gsclo, gmpo, stockCartFrame);
 		
 		sclfc.launch();
+
 		
-		MainFrameController mainFrameController = new MainFrameController(frame, stockCartFrame, stockCartListFrame, gsclo, gsco);
+		MainFrameController mainFrameController = new MainFrameController(frame, stockCartFrame, stockCartListFrame, gsclo, gsco, gmpo);
+		
 		mainFrameController.launch();
 		
 	}
